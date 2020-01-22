@@ -1,0 +1,9 @@
+{
+  "name": "face-verification",
+  "version": "1.0.0",
+  "description": "Livness and Uniqueness based on face recognition and biometrics",
+  "main": "index.js",
+  "repository": "https://github.com/GoodDollar/FaceVerification",
+  "author": "GoodDollar Community",
+  "license": "MIT"
+}
