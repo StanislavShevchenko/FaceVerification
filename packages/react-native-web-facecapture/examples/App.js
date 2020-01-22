@@ -3,13 +3,13 @@ import { StyleSheet, Text, View } from "react-native";
 import FaceCapture from "./src/faceVerification/FaceCapture";
 export default function App() {
   const onFaces = (faces, camera, captured) => {
-    camera.pausePreview();
+    // camera.pausePreview();
     console.log("Valid face:", { faces, images: captured.length });
   };
 
   return (
     <View style={styles.container}>
-      <FaceCapture onFaces={onFaces} />
+      <FaceCapture onFaces={onFaces} onError={e => console.log("onError", e)} />
     </View>
   );
 }
