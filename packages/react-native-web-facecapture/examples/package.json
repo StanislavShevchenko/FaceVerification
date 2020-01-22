@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^0.10.10",
-    "@gooddollar/react-native-web-facecapture": "file:../gooddollar-react-native-web-facecapture-0.1.0.tgz",
+    "@gooddollar/react-native-web-facecapture": "../../react-native-web-facecapture/",
     "buffer": "^5.4.3",
     "expo": "~36.0.0",
     "face-api.js": "^0.22.0",

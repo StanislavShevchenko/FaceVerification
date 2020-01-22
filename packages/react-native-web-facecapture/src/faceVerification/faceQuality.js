@@ -7,7 +7,11 @@ const isValidFace = (viewport, face) => {
   const facesize = face.bounds;
   const requiredWidth = viewport.width * 0.6;
   const requiredHeight = viewport.height * 0.6;
+  const eyesDistance =
+    _get(face, "leftEyePosition", 0) - _get(face, "rightEyePosition", 0);
 
+  if (eyesDistance > 0)
+    return { ok: false, error: "Eyes distance " + eyesDistance };
   if (
     facesize.size.width < requiredWidth * 0.7 ||
     facesize.size.height < requiredHeight * 0.7
