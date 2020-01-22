@@ -1023,6 +1023,16 @@
     pouchdb-collections "^1.0.1"
     tiny-queue "^0.2.1"
 
+"@gooddollar/react-native-web-facecapture@file:../gooddollar-react-native-web-facecapture-0.1.0.tgz":
+  version "0.1.0"
+  resolved "file:../gooddollar-react-native-web-facecapture-0.1.0.tgz#6017f9f51abc287766f9a70f054601fcdd25db5c"
+  dependencies:
+    buffer "^5.4.3"
+    face-api.js "^0.22.0"
+    image-js "^0.21.8"
+    jpeg-js "^0.3.6"
+    lodash "^4.17.15"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -4395,11 +4405,6 @@ expo-error-recovery@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/expo-error-recovery/-/expo-error-recovery-1.0.0.tgz#2ca9d59fcd16c5c881af877993731056f2d46afe"
   integrity sha512-xnxciNEpGmwxx8BAE2A9fd9HxtzWtz8p9mikKU+EfWgOXaYD3FJwgbFoVLD2pm4QUarxwOcic76rcwg+0cNnGg==
-
-expo-face-detector@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/expo-face-detector/-/expo-face-detector-8.0.0.tgz#dd8fcdffba2200bc8d96c0c26e1456ab42315226"
-  integrity sha512-eO1JQ8DdtRJbsubb8a3QvEPrajz8QmLVEF6rcJP82NoS8d4cPgprcs65GNgxixJS1ZrVTEnqjDlNtcVA2FtsQg==
 
 expo-file-system@~8.0.0:
   version "8.0.0"

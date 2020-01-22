@@ -17,12 +17,27 @@ const FaceCapture = ({
   isValidFace = isValidFaceDefault,
   isQualityImage = isQualityImageDefault,
   onFaces,
+  onError,
   cameraContainerStyle = {},
   containerStyle = {},
   cameraProps = {},
-  overlayProps
+  overlayProps,
+  pictureOptions = {}
 }) => {
   let camera;
+  pictureOptions = {
+    ...{
+      width: 640,
+      orientation: "portrait",
+      quality: 0.9,
+      base64: true,
+      doNotSave: true,
+      forceOrientation: true,
+      fixOrientation: true,
+      exif: true
+    },
+    ...pictureOptions
+  };
   let [face, setFace] = useState();
   let [message, setMessage] = useState();
   let [valid, setValid] = useState(false);
@@ -32,45 +47,50 @@ const FaceCapture = ({
 
   const onFacesProxy = async (faces, viewport, camera) => {
     // console.log({ faces }, faces.faces[0])
-    //stop once we have a valid face
-    if (valid) return;
-    if (!faces || !faces.faces) return;
-    if (faces.faces.length === 1) {
-      let imageResult;
-      let tookPicture = false;
-      setFace(faces.faces[0]);
-      if (takingPicture === false) {
-        imageResult = takePicture(camera, faces.faces[0], viewport);
-        tookPicture = true;
-      }
-      //if badlighting status is on then dont continue unless new image is ok
-      if (brightness.ok === false) {
-        setMessage("Too Dark " + brightness.brightness);
-        const isGoodLighting = await imageResult;
-        console.log({ isGoodLighting });
-        if (isGoodLighting !== true) return;
-        setMessage(undefined);
-      }
-      const facesResult = faces.faces.map(_ => {
-        const res = isValidFace(viewport, _);
-        return { ..._, ...res };
-      });
-      const validFaces = facesResult.filter(_ => _.ok);
-      if (validFaces.length === 1) {
-        setMessage(undefined);
-        setValid(true);
-        //take last shot
-        if (tookPicture === false)
-          await takePicture(camera, faces.faces[0], viewport);
-        onFaces(validFaces, camera, captured);
+    try {
+      //stop once we have a valid face
+      if (valid) return;
+      if (!faces || !faces.faces) return;
+      if (faces.faces.length === 1) {
+        let imageResult;
+        let tookPicture = false;
+        setFace(faces.faces[0]);
+        if (takingPicture === false) {
+          imageResult = takePicture(camera, faces.faces[0], viewport);
+          tookPicture = true;
+        }
+        //if badlighting status is on then dont continue unless new image is ok
+        if (brightness.ok === false) {
+          setMessage("Too Dark " + brightness.brightness);
+          const isGoodLighting = await imageResult;
+          console.log({ isGoodLighting });
+          if (isGoodLighting !== true) return;
+          setMessage(undefined);
+        }
+        const facesResult = faces.faces.map(_ => {
+          const res = isValidFace(viewport, _);
+          return { ..._, ...res };
+        });
+        const validFaces = facesResult.filter(_ => _.ok);
+        if (validFaces.length === 1) {
+          setMessage(undefined);
+          setValid(true);
+          //take last shot
+          if (tookPicture === false)
+            await takePicture(camera, faces.faces[0], viewport);
+          onFaces(validFaces, camera, captured);
+        } else {
+          console.log(facesResult[0]);
+          setMessage(facesResult[0].error);
+        }
+      } else if (faces.faces.length > 1) {
+        setMessage("More Than One Face Detected");
       } else {
-        console.log(facesResult[0]);
-        setMessage(facesResult[0].error);
+        setMessage("No faces detected");
       }
-    } else if (faces.faces.length > 1) {
-      setMessage("More Than One Face Detected");
-    } else {
-      setMessage("No faces detected");
+    } catch (e) {
+      console.log("Exception in onFacesProxy", { e });
+      onError && onError({ error: "onFacesProxy failed", exception: e });
     }
   };
 
@@ -107,19 +127,9 @@ const FaceCapture = ({
 
   const takePicture = async (camera, face, viewport) => {
     if (camera) {
-      const options = {
-        width: 480,
-        orientation: "portrait",
-        quality: 0.9,
-        base64: true,
-        doNotSave: true,
-        forceOrientation: true,
-        fixOrientation: true,
-        exif: true
-      };
       try {
         takingPicture = true;
-        const data = await camera.takePictureAsync(options);
+        const data = await camera.takePictureAsync(pictureOptions);
         takingPicture = false;
         const faceBase64 = await cropToFace(data, face, viewport);
         setSample(faceBase64);
@@ -139,6 +149,7 @@ const FaceCapture = ({
         return isValid.ok;
       } catch (e) {
         console.log("Error capturing face:", e);
+        onError && onError({ error: "takePicture failed", exception: e });
       }
     }
   };
@@ -146,11 +157,11 @@ const FaceCapture = ({
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.cameraContainer, cameraContainerStyle]}>
-        <Camera onFaces={handler} cameraProps={cameraProps} />
+        <Camera onError={onError} onFaces={handler} cameraProps={cameraProps} />
       </View>
       <CameraOverlay
         color={valid ? "rgba(0,250,50,0.5)" : "rgba(0,0,0,0.5)"}
-        overlayProps={overlayProps}
+        {...overlayProps}
       />
       <View style={styles.facesContainer}>
         <Text style={styles.feedBack}>{message}</Text>

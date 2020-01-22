@@ -45,10 +45,7 @@ const WrappedSvg = ({ ellipseProps, rectProps, color }) => {
   );
 };
 
-const CameraOverlay = ({
-  color,
-  overlayProps = { rectProps: {}, ellipseProps: {} }
-}) => {
+const CameraOverlay = props => {
   const [overlay, setOverlay] = useState(false);
   useEffect(() => {
     //solve bug, svg not shown on first render
@@ -65,7 +62,7 @@ const CameraOverlay = ({
         width: "100%"
       }}
     >
-      {overlay && <WrappedSvg color={color} {...overlayProps} />}
+      {overlay && <WrappedSvg {...props} />}
     </View>
   );
 };

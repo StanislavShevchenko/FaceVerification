@@ -70,8 +70,11 @@ const cropToFace = async (img, face, viewport) => {
   //expand the facebox and get relative img coordinates of face
   const imgX = Math.floor((face.bounds.origin.x / viewW) * img.width * 0.8);
   const imgY = Math.floor((face.bounds.origin.y / viewH) * img.height * 0.8);
-  const imgW = Math.floor((face.bounds.size.width / viewW) * img.width);
-  const imgH = Math.floor((face.bounds.size.height / viewH) * img.height * 1.2);
+  let imgW = Math.floor((face.bounds.size.width / viewW) * img.width);
+  imgW = imgW + imgX > img.width ? img.width - imgX : imgW;
+  let imgH = Math.floor((face.bounds.size.height / viewH) * img.height * 1.2);
+  imgH = imgH + imgY > img.height ? img.height - imgY : imgH;
+
   return edit
     .crop({
       x: imgX,

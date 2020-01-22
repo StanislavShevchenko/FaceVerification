@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { RNCamera } from "react-native-camera";
 import { StyleSheet } from "react-native";
 
-const Camera = ({ onFaces, cameraProps = {} }) => {
+const Camera = ({ onFaces, onError, cameraProps = {} }) => {
   let camera;
   let [face, setFace] = useState();
   let [viewport, setViewport] = useState();
@@ -10,6 +10,8 @@ const Camera = ({ onFaces, cameraProps = {} }) => {
   const onFacesProxy = faces => onFaces(faces, viewport, camera);
   return (
     <RNCamera
+      onFaceDetectionError={onError}
+      onMountError={onError}
       onLayout={e => setViewport(e.nativeEvent.layout)}
       ref={ref => {
         camera = ref;
