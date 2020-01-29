@@ -1,0 +1,25 @@
+{
+  "name": "express-kairos-faceverification",
+  "version": "1.0.0",
+  "description": "Verify unique and human users using face biometrics",
+  "main": "index.js",
+  "repository": "https://github.com/GoodDollar/FaceVerification",
+  "author": "GoodDollar community",
+  "license": "MIT",
+  "dependencies": {
+    "imghash": "^0.0.6",
+    "lodash": "^4.17.15",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/jest": "^24.9.1",
+    "enzyme": "^3.11.0",
+    "jest": "^25.1.0",
+    "parcel-bundler": "^1.12.4",
+    "sharp-phash": "^1.0.2",
+    "typescript": "^3.7.5"
+  }
+}
