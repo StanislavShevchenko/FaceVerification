@@ -6,7 +6,9 @@ npm-debug.log
 tmp
 build
 dist
-
+.cache
 # Dependency directory
 node_modules
 *.tgz
+.env.*
+.env
